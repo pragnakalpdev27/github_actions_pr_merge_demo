@@ -100,10 +100,11 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-    - name: Sync files to the server
-      run: |
-        rsync -avz --exclude 'env' --exclude '.git' ./ username@remote_host:/path/to/remote/project
+    - name: Add server host to known hosts
+      run: ssh-keyscan -H 34.71.200.59>> ~/.ssh/known_hosts
 
-    - name: Restart server
+    - name: Deploy to server
       run: |
-        ssh username@remote_host 'sudo systemctl restart myproject'
+        ssh pragnakalp.dev5@34.71.200.59 "cd /home/pragnakalp.dev5/github_action && git pull origin master"
+      
+ 
